@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/ico" sizes="16x16">
+    <title>Psychic</title>
+    <style type="text/css">
+    body {
+        margin-top: 60px;
+        margin-bottom: 30px;
+    }
+    
+    footer {
+        height: 5%;
+        color: #9D9D95;
+        text-align: center;
+        padding: 10px;
+    }
+    
+    .gamewindow {
+        padding: 50px;
+    }
+
+    #yohane {
+        width: 400px;
+        height: auto;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- nav bar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Psychic Game</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="jumbotron gamewindow" id="game">
+            <img src="assets/images/yohane.jpg" id="yohane" class="img-responsive img-rounded">
+            <p>Guess what letter I'm thinking of. Press any letter to start.</p>
+        </div>
+    </div>
+    <script type="text/javascript">
+    // declare array for possible computer choices (a-z). Vars to hold win, loss, and try count.
+    var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    var wins = 0;
+    var losses = 0;
+    var tries = 9;
+    // declare an array where we're going to put in user guesses.
+    var lettersGuessed = ["_", "_", "_", "_", "_", "_", "_", "_", "_"];
+    // randomly assign computer guess to a value from computerChoices array we made before
+    var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+    // was having problems with computerGuess not staying the same when user hit a key, so made a variable to hold computerGuess value and stay.
+    var compGuessHolder = computerGuess;
+
+    // function to be called on to reset game if user wins or loses (assign new comp choice, reset tries, guessed letters)
+    function reset() {
+        var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+        tries = 9;
+        lettersGuessed = ["_", "_", "_", "_", "_", "_", "_", "_", "_"];
+        compGuessHolder = computerGuess;
+    }
+
+    document.onkeyup = function(event) {
+            //user guess is key that user hits
+            var userGuess = event.key;
+            // variable takes userGuess, makes it lower case, and stores it in userGuessLower for comparison sake later
+            var userGuessLower = userGuess.toLowerCase();
+
+            var html = "<img src=\"assets/images/yohane.jpg\" id=\"yohane\" class=\"img-responsive img-rounded\">" +
+                "<p>Guess what letter I'm thinking of. Press any letter to start.</p>" +
+                "<p>Wins: " + wins + "</p>" +
+                "<p>Losses: " + losses + "</p>" +
+                "<p>Guesses left: " + tries + "</p>" +
+                "<p>Your Guesses so far: " + lettersGuessed.join(" ");
+
+            document.querySelector("#game").innerHTML = html;
+        } //end of document.onekeyup. 
+    </script>
+    <!-- footer -->
+    <footer class="footer-bottom col-xs-12 navbar-inverse navbar-fixed-bottom">
+        <div class="container">
+            <div class="row">
+                <p>© Copyright 2017 Lawrence Asperilla</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
+
+<!-- vars win, loss, tries, letters guessed, 
+
+reset function
+
+function {
+    look at object with movie titles - key property array length, set guess to array with object array key property length, 
+    loop to fill said array with "_"
+
+    user guess ...
+    loop to check each index of method array for matches, add it to hangman reveal array
+    win/loss conditions
+} -->
