@@ -24,6 +24,13 @@
     .gamewindow {
         padding: 50px;
     }
+
+    #seanimg {
+        height: 200px;
+        width: auto;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
     </style>
 </head>
 
@@ -49,7 +56,12 @@
         </div>
     </nav>
     <div class="container">
-        <div class="jumbotron gamewindow" id="game">
+        <div class="jumbotron gamewindow">
+            <div id="seanbanner">
+                <img src="assets/images/sean.jpg" id="seanimg" class="img-responsive img-rounded">
+            </div>
+            <div  id="game">
+            </div>
         </div>
     </div>
     <script type="text/javascript">
@@ -148,19 +160,14 @@
                 "<p><em>Hint: " + moviesObj[computerGuess] + "</em></p>" +
                 "<p>Number of Guesses Remaining: " + tries + "</p>" +
                 "<p>Your Guesses so far: " + lettersGuessed.join(", ");
-
             document.querySelector("#game").innerHTML = html;
+            document.querySelector("#seanbanner").innerHTML = '<img src="assets/images/sean.jpg" id="seanimg" class="img-responsive img-rounded">';
 
             if (answer.toString() === revealAnswer.toString()) {
                 wins++;
-                alert("youwin");
+                // alert("youwin");
                 reset();
-            }
-
-            if (tries === 0) {
-                reset();
-                html = "<p>You lost! Punch the Keys for God's Sake!</p>" +
-                    "<p>Press any key to get Started!</p>" +
+                html = "<p>You win! You're the Man Now Dog! <br>Press any key to get Started!</p>" +
                     "<p>Wins: " + wins + "</p>" +
                     "<p><strong><h3>Current Movie</h3></strong></p>" +
                     "<p>" + revealAnswer.join(" ") + "</p>" +
@@ -168,6 +175,20 @@
                     "<p>Number of Guesses Remaining: " + tries + "</p>" +
                     "<p>Your Guesses so far: " + lettersGuessed.join(", ");
                 document.querySelector("#game").innerHTML = html;
+                document.querySelector("#seanbanner").innerHTML = '<img src="assets/images/ytmnd.jpg" id="seanimg" class="img-responsive img-rounded">';
+            }
+
+            if (tries === 0) {
+                reset();
+                html = "<p>You lost! Punch the Keys for God's Sake! <br>Press any key to get Started!</p>" +
+                    "<p>Wins: " + wins + "</p>" +
+                    "<p><strong><h3>Current Movie</h3></strong></p>" +
+                    "<p>" + revealAnswer.join(" ") + "</p>" +
+                    "<p><em>Hint: " + moviesObj[computerGuess] + "</em></p>" +
+                    "<p>Number of Guesses Remaining: " + tries + "</p>" +
+                    "<p>Your Guesses so far: " + lettersGuessed.join(", ");
+                document.querySelector("#game").innerHTML = html;
+                document.querySelector("#seanbanner").innerHTML = '<img src="assets/images/ptkfgs.png" id="seanimg" class="img-responsive img-rounded">';
             }
             console.log("---------");
             console.log("answer " + answer);
@@ -208,4 +229,5 @@ user hits letter already guess - does nothing
 win changes picture and sound
 
 make other objects with same title keys with pictures or sound upon win
+Fix revealAnswer print out when title contains a space
 } -->
