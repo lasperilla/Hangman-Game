@@ -45,23 +45,25 @@
     </nav>
     <div class="container">
         <div class="jumbotron gamewindow" id="game">
-           <!--  <img src="assets/images/yohane.jpg" id="yohane" class="img-responsive img-rounded"> -->
-            <p>Guess what letter I'm thinking of. Press any letter to start.</p>
         </div>
     </div>
     <script type="text/javascript">
         var wins = 0;
-        var losses = 0;
-        var tries;
+        // var losses = 0;
+        var tries = 15;
         var computerGuess;
+        var revealAnswer =[];
         var lettersGuessed =[];
         var moviesObj = {
             goldfinger: "The third movie in the James Bond series. This movie stars Sean Connery as the Iconic M16 agent, James Bond, as well as Gert Frobe as this movie's titular villain.",
             entrapment: 'This movie focuses on a heist attempted by an investigator played by Catherine Zeta-Jones and a professional thief played by Sean Connery. "Catherine Zeta Jones, she dips beneath lasers, woah oh oh"',
             "finding forrester": "This movie focuses on a young New York youth who is taken under the mentorship of a reclusive author played by Sean Connery. The youth is dared to sneak into the author's office, is caught, and flees. The author recognizes the youth's potential after reading the journals inside the backpack left by the fleeing youth."
         }
+
         var titlesArr = Object.keys(moviesObj);
-        console.log(titlesArr);
+ 
+        var validInput = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
         function titleFunc(title) {
             var str = title;
             var titleUpper = str.toUpperCase();
@@ -73,22 +75,45 @@
         function guessedFunc(correctAnswer){
             for (var i = 0; i < correctAnswer.length; i++) {
                 if (correctAnswer[i] !== " "){
-                    lettersGuessed.push("_");
+                    revealAnswer.push("_");
                 } else {
-                    lettersGuessed.push(" ");
+                    revealAnswer.push(" ");
                 }
             }
-            console.log(lettersGuessed);
-            return lettersGuessed;
+            console.log(revealAnswer);
+            return revealAnswer;
         }
 
-        function reset {
+        function reset() {
             computerGuess = titlesArr[Math.floor(Math.random() * titlesArr.length)];
-            compGuessHolder = computerGuess;
+            var answer = titleFunc(computerGuess);
+            guessedFunc(answer);
+            console.log("answer"+answer);
+            console.log("revealAnswer" +revealAnswer);
+            tries = 15;
         }
 
+        reset();
+        //intialize #game div
+        var html = "<p>Press any key to get Started!</p>" +
+            "<p>Wins: " + wins + "</p>" +
+            "<p>Current Word</p>" +
+            "<p>" + revealAnswer.join(" ") + "</p>" +
+            "<p>Number of Guesses Remaining: " + tries + "</p>" +
+            "<p>Your Guesses so far: " + lettersGuessed;
 
+        document.querySelector("#game").innerHTML = html;
+        
+        document.onkeyup = function(event) {
+            //user guess is key that user hits
+            var userGuess = event.key;
+            // variable takes userGuess, makes it upper case so program can compare it to letters in the variable "answer"
+            var userGuessUpper = userGuess.toUpperCase();
 
+            if (validInput.indexOf(userGuessUpper) !== -1) {
+                
+            }
+        } //end of onkeyup
     </script>
     <!-- footer -->
     <footer class="footer-bottom col-xs-12 navbar-inverse navbar-fixed-bottom">
