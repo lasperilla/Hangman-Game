@@ -52,8 +52,10 @@
         // var losses = 0;
         var tries = 15;
         var computerGuess;
+        var answer;
         var revealAnswer =[];
         var lettersGuessed =[];
+        var allLetters = [];
         var moviesObj = {
             goldfinger: "The third movie in the James Bond series. This movie stars Sean Connery as the Iconic M16 agent, James Bond, as well as Gert Frobe as this movie's titular villain.",
             entrapment: 'This movie focuses on a heist attempted by an investigator played by Catherine Zeta-Jones and a professional thief played by Sean Connery. "Catherine Zeta Jones, she dips beneath lasers, woah oh oh"',
@@ -86,11 +88,12 @@
 
         function reset() {
             computerGuess = titlesArr[Math.floor(Math.random() * titlesArr.length)];
-            var answer = titleFunc(computerGuess);
+            answer = titleFunc(computerGuess);
             guessedFunc(answer);
             console.log("answer"+answer);
             console.log("revealAnswer" +revealAnswer);
             tries = 15;
+            allLetters = [];
         }
 
         reset();
@@ -110,9 +113,32 @@
             // variable takes userGuess, makes it upper case so program can compare it to letters in the variable "answer"
             var userGuessUpper = userGuess.toUpperCase();
 
-            if (validInput.indexOf(userGuessUpper) !== -1) {
-                
+            allLetters = revealAnswer.concat(lettersGuessed);
+            console.log(allLetters);
+
+            if (validInput.indexOf(userGuessUpper) !== -1 && allLetters.indexOf(userGuessUpper) === -1) {
+                console.log('**ok**')
+
+                if (answer.indexOf(userGuessUpper) !== -1) {
+                    for (var i = 0; i < answer.length; i++) {
+                        if (userGuessUpper === answer[i]) {
+                            revealAnswer[i] = userGuessUpper;
+                        }
+                    };
+                } else { 
+                    lettersGuessed.push(userGuessUpper);
+                    tries--;
+                }
             }
+
+            html = "<p>Press any key to get Started!</p>" +
+            "<p>Wins: " + wins + "</p>" +
+            "<p>Current Word</p>" +
+            "<p>" + revealAnswer + "</p>" +
+            "<p>Number of Guesses Remaining: " + tries + "</p>" +
+            "<p>Your Guesses so far: " + lettersGuessed.join(", ");
+
+            document.querySelector("#game").innerHTML = html;
         } //end of onkeyup
     </script>
     <!-- footer -->
@@ -143,4 +169,7 @@ function {
     user guess ...
     loop to check each index of method array for matches, add it to hangman reveal array
     win/loss conditions
+
+user hits letter already guess - does nothing
+win changes picture and sound
 } -->
