@@ -24,7 +24,6 @@
     .gamewindow {
         padding: 50px;
     }
-
     </style>
 </head>
 
@@ -33,13 +32,19 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-<!--                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <!--                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button> -->
                 <a class="navbar-brand" href="#">Hangman</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse navbar-right" aria-expanded="false" style="height: 0.8px;">
+                <ul class="nav navbar-nav">
+                    <li><a href="https://lasperilla.github.io/Psychic-Game/">Psychic Game</a></li>
+                    <li class="active"><a href="#">Hangman β</a></li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -48,66 +53,69 @@
         </div>
     </div>
     <script type="text/javascript">
-        var wins = 0;
-        // var losses = 0;
-        var tries = 15;
-        var computerGuess;
-        var answer;
-        var revealAnswer =[];
-        var lettersGuessed =[];
-        var allLetters = [];
-        var moviesObj = {
-            goldfinger: "The third movie in the James Bond series. This movie stars Sean Connery as the Iconic M16 agent, James Bond, as well as Gert Frobe as this movie's titular villain.",
-            entrapment: 'This movie focuses on a heist attempted by an investigator played by Catherine Zeta-Jones and a professional thief played by Sean Connery. "Catherine Zeta Jones, she dips beneath lasers, woah oh oh"',
-            "finding forrester": "This movie focuses on a young New York youth who is taken under the mentorship of a reclusive author played by Sean Connery. The youth is dared to sneak into the author's office, is caught, and flees. The author recognizes the youth's potential after reading the journals inside the backpack left by the fleeing youth."
-        }
+    var wins = 0;
+    // var losses = 0;
+    var tries = 15;
+    var computerGuess;
+    var answer;
+    var revealAnswer = [];
+    var lettersGuessed = [];
+    var allLetters = [];
+    var moviesObj = {
+        goldfinger: "The third movie in the James Bond series. This movie stars Sean Connery as the Iconic M16 agent, James Bond, as well as Gert Frobe as this movie's titular villain.",
+        entrapment: 'This movie focuses on a heist attempted by an investigator played by Catherine Zeta-Jones and a professional thief played by Sean Connery. "Catherine Zeta Jones, she dips beneath lasers, woah oh oh"',
+        "finding forrester": "This movie focuses on a young New York youth who is taken under the mentorship of a reclusive author played by Sean Connery. The youth is dared to sneak into the author's office, is caught, and flees. The author recognizes the youth's potential after reading the journals inside the backpack left by the fleeing youth."
+    }
 
-        var titlesArr = Object.keys(moviesObj);
- 
-        var validInput = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    var titlesArr = Object.keys(moviesObj);
 
-        function titleFunc(title) {
-            var str = title;
-            var titleUpper = str.toUpperCase();
-            var correctAnswerArr = titleUpper.split('');
-            console.log(correctAnswerArr);
-            return correctAnswerArr;
-        }
+    var validInput = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
-        function guessedFunc(correctAnswer){
-            for (var i = 0; i < correctAnswer.length; i++) {
-                if (correctAnswer[i] !== " "){
-                    revealAnswer.push("_");
-                } else {
-                    revealAnswer.push(" ");
-                }
+    function titleFunc(title) {
+        var str = title;
+        var titleUpper = str.toUpperCase();
+        var correctAnswerArr = titleUpper.split('');
+        console.log(correctAnswerArr);
+        return correctAnswerArr;
+    }
+
+    function guessedFunc(correctAnswer) {
+        revealAnswer = [];
+        for (var i = 0; i < correctAnswer.length; i++) {
+            if (correctAnswer[i] !== " ") {
+                revealAnswer.push("_");
+            } else {
+                revealAnswer.push(" ");
             }
-            console.log(revealAnswer);
-            return revealAnswer;
         }
+        console.log("reveal answer: " + revealAnswer);
+        return revealAnswer;
+    }
 
-        function reset() {
-            computerGuess = titlesArr[Math.floor(Math.random() * titlesArr.length)];
-            answer = titleFunc(computerGuess);
-            guessedFunc(answer);
-            console.log("answer"+answer);
-            console.log("revealAnswer" +revealAnswer);
-            tries = 15;
-            allLetters = [];
-        }
-
-        reset();
-        //intialize #game div
+    function reset() {
+        computerGuess = titlesArr[Math.floor(Math.random() * titlesArr.length)];
+        answer = titleFunc(computerGuess);
+        revealAnswer = guessedFunc(answer);
+        console.log("answer" + answer);
+        console.log("revealAnswer" + revealAnswer);
+        tries = 15;
+        allLetters = [];
+        lettersGuessed = [];
         var html = "<p>Press any key to get Started!</p>" +
             "<p>Wins: " + wins + "</p>" +
-            "<p>Current Word</p>" +
+            "<p><strong><h3>Current Movie</h3></strong></p>" +
             "<p>" + revealAnswer.join(" ") + "</p>" +
+            "<p><em>Hint: " + moviesObj[computerGuess] + "</em></p>" +
             "<p>Number of Guesses Remaining: " + tries + "</p>" +
             "<p>Your Guesses so far: " + lettersGuessed;
-
         document.querySelector("#game").innerHTML = html;
-        
-        document.onkeyup = function(event) {
+    }
+
+    reset();
+
+
+
+    document.onkeyup = function(event) {
             //user guess is key that user hits
             var userGuess = event.key;
             // variable takes userGuess, makes it upper case so program can compare it to letters in the variable "answer"
@@ -125,20 +133,47 @@
                             revealAnswer[i] = userGuessUpper;
                         }
                     };
-                } else { 
+                } else {
                     lettersGuessed.push(userGuessUpper);
                     tries--;
                 }
             }
 
-            html = "<p>Press any key to get Started!</p>" +
-            "<p>Wins: " + wins + "</p>" +
-            "<p>Current Word</p>" +
-            "<p>" + revealAnswer + "</p>" +
-            "<p>Number of Guesses Remaining: " + tries + "</p>" +
-            "<p>Your Guesses so far: " + lettersGuessed.join(", ");
+
+
+            html = //"<p>Enter another letter.</p>" +
+                "<p>Wins: " + wins + "</p>" +
+                "<p><strong><h3>Current Movie</h3></strong></p>" +
+                "<p>" + revealAnswer.join(" ") + "</p>" +
+                "<p><em>Hint: " + moviesObj[computerGuess] + "</em></p>" +
+                "<p>Number of Guesses Remaining: " + tries + "</p>" +
+                "<p>Your Guesses so far: " + lettersGuessed.join(", ");
 
             document.querySelector("#game").innerHTML = html;
+
+            if (answer.toString() === revealAnswer.toString()) {
+                wins++;
+                alert("youwin");
+                reset();
+            }
+
+            if (tries === 0) {
+                reset();
+                html = "<p>You lost! Punch the Keys for God's Sake!</p>" +
+                    "<p>Press any key to get Started!</p>" +
+                    "<p>Wins: " + wins + "</p>" +
+                    "<p><strong><h3>Current Movie</h3></strong></p>" +
+                    "<p>" + revealAnswer.join(" ") + "</p>" +
+                    "<p><em>Hint: " + moviesObj[computerGuess] + "</em></p>" +
+                    "<p>Number of Guesses Remaining: " + tries + "</p>" +
+                    "<p>Your Guesses so far: " + lettersGuessed.join(", ");
+                document.querySelector("#game").innerHTML = html;
+            }
+            console.log("---------");
+            console.log("answer " + answer);
+            console.log("revealAnswer " + revealAnswer);
+            console.log("---------");
+
         } //end of onkeyup
     </script>
     <!-- footer -->
@@ -152,7 +187,6 @@
 </body>
 
 </html>
-
 <!-- vars win, loss, tries, letters guessed, 
 
 2 objects with same keys? {movie title: title as an array} {movie title: hit/blurb}
@@ -172,4 +206,6 @@ function {
 
 user hits letter already guess - does nothing
 win changes picture and sound
+
+make other objects with same title keys with pictures or sound upon win
 } -->
